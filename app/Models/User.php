@@ -2,32 +2,27 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
+     * Yang bisa diisi secara massal (Mass Assignable).
+     * Kolom 'nama' dan 'role' wajib dimasukkan di sini.
      */
     protected $fillable = [
-        'name',
+        'nama',     // Mengizinkan pengisian kolom nama
         'email',
         'password',
+        'role',     // Mengizinkan pengisian kolom role
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
+     * Atribut yang disembunyikan saat serialisasi.
      */
     protected $hidden = [
         'password',
@@ -35,9 +30,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Konversi tipe data otomatis dari Laravel.
      */
     protected function casts(): array
     {
@@ -47,9 +40,11 @@ class User extends Authenticatable
         ];
     }
 
-public function anggota()
-{
-    return $this->hasOne(Anggota::class, 'user_id', 'id');
-}
-
+    /**
+     * Relasi ke Model Anggota (Satu User memiliki Satu Profil Anggota)
+     */
+    public function anggota()
+    {
+        return $this->hasOne(Anggota::class, 'user_id', 'id');
+    }
 }
